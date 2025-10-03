@@ -1,0 +1,335 @@
+/*
+Base styles mirroring the Base44 application. Values are injected at runtime
+from ``tokens.py`` via ``str.format`` to ensure a single source of truth for the
+design system.
+*/
+:root {{
+  --font-sans: {typography_font_family_sans};
+  --font-mono: {typography_font_family_mono};
+  --heading-weight: {typography_heading_weight};
+  --body-weight: {typography_body_weight};
+  --caption-weight: {typography_caption_weight};
+}}
+
+/* Token driven CSS variables */
+{css_variables}
+
+/* Streamlit overrides */
+section.main > div {{
+  padding-left: {spacing_scale_400};
+  padding-right: {spacing_scale_400};
+  padding-top: calc({layout_header_height} + {spacing_scale_300});
+  max-width: {layout_max_width};
+  margin: 0 auto;
+  font-family: var(--font-sans);
+}}
+
+div[data-testid="stHeader"] {{
+  height: 0;
+  padding: 0;
+}}
+
+div[data-testid="stSidebar"] > div:first-child {{
+  padding-top: {spacing_scale_400};
+}}
+
+div[data-testid="stSidebar"] {{
+  width: {layout_sidebar_width};
+}}
+
+/* Typography */
+h1, .heading-1 {{
+  font-size: {typography_h1_size};
+  line-height: {typography_h1_line_height};
+  font-weight: var(--heading-weight);
+  letter-spacing: {typography_h1_letter_spacing};
+  color: {colors_neutral_800};
+}}
+
+h2, .heading-2 {{
+  font-size: {typography_h2_size};
+  line-height: {typography_h2_line_height};
+  font-weight: var(--heading-weight);
+  letter-spacing: {typography_h2_letter_spacing};
+  color: {colors_neutral_800};
+}}
+
+h3, .heading-3 {{
+  font-size: {typography_h3_size};
+  line-height: {typography_h3_line_height};
+  font-weight: var(--heading-weight);
+  letter-spacing: {typography_h3_letter_spacing};
+  color: {colors_neutral_700};
+}}
+
+body, p, .body-text {{
+  font-size: {typography_body_size};
+  line-height: {typography_body_line_height};
+  font-weight: var(--body-weight);
+  letter-spacing: {typography_body_letter_spacing};
+  color: {colors_neutral_700};
+}}
+
+.small-text {{
+  font-size: {typography_small_size};
+  line-height: {typography_small_line_height};
+}}
+
+.caption-text {{
+  font-size: {typography_caption_size};
+  line-height: {typography_caption_line_height};
+  font-weight: var(--caption-weight);
+  letter-spacing: {typography_caption_letter_spacing};
+}}
+
+/* Card */
+.base-card {{
+  background: {colors_white};
+  border-radius: {radii_md};
+  box-shadow: {shadows_subtle};
+  padding: {spacing_scale_300};
+  border: 1px solid {colors_neutral_200};
+}}
+
+.base-card--flush {{
+  padding: 0;
+}}
+
+/* Toolbar */
+.base-toolbar {{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: {spacing_scale_200};
+  padding: {spacing_scale_200} 0;
+}}
+
+.base-toolbar__actions {{
+  display: flex;
+  align-items: center;
+  gap: {spacing_scale_150};
+}}
+
+/* Buttons */
+.base-button-wrapper {{
+  display: inline-flex;
+}}
+
+.base-button-wrapper button {{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 {spacing_scale_200};
+  min-height: {spacing_scale_500};
+  border-radius: {radii_md};
+  border: 1px solid transparent;
+  font-weight: var(--heading-weight);
+  font-size: {typography_small_size};
+  line-height: {typography_small_line_height};
+  letter-spacing: {typography_small_letter_spacing};
+  transition: background-color {motion_duration_base} {motion_easing_standard},
+              box-shadow {motion_duration_base} {motion_easing_standard},
+              transform {motion_duration_base} {motion_easing_standard};
+  cursor: pointer;
+  text-decoration: none;
+}}
+
+.base-button-wrapper.base-button--primary button {{
+  background: {colors_primary};
+  color: {colors_white};
+  box-shadow: {shadows_subtle};
+}}
+
+.base-button-wrapper.base-button--primary button:hover:not(:disabled) {{
+  background: {colors_primary_emphasis};
+  transform: translateY(-1px);
+}}
+
+.base-button-wrapper.base-button--secondary button {{
+  background: {colors_primary_subtle};
+  color: {colors_primary};
+  border-color: {colors_primary};
+}}
+
+.base-button-wrapper.base-button--ghost button {{
+  background: transparent;
+  color: {colors_neutral_700};
+  border-color: {colors_neutral_300};
+}}
+
+.base-button-wrapper button:disabled {{
+  opacity: 0.5;
+  cursor: not-allowed;
+}}
+
+/* Inputs */
+.base-input input,
+.base-select select {{
+  width: 100%;
+  min-height: {spacing_scale_500};
+  border-radius: {radii_md};
+  border: 1px solid {colors_neutral_300};
+  padding: 0 {spacing_scale_200};
+  background: {colors_white};
+  transition: border-color {motion_duration_fast} {motion_easing_standard},
+              box-shadow {motion_duration_fast} {motion_easing_standard};
+  font-size: {typography_body_size};
+  line-height: {typography_body_line_height};
+}}
+
+.base-input input:focus,
+.base-select select:focus {{
+  outline: 2px solid {colors_info};
+  outline-offset: 2px;
+  border-color: {colors_info};
+  box-shadow: 0 0 0 2px {colors_info_subtle};
+}}
+
+.base-input__label,
+.base-select__label {{
+  display: block;
+  margin-bottom: {spacing_scale_50};
+  font-weight: var(--heading-weight);
+  color: {colors_neutral_700};
+}}
+
+.base-input__helper,
+.base-select__helper {{
+  margin-top: {spacing_scale_50};
+  font-size: {typography_small_size};
+  line-height: {typography_small_line_height};
+  color: {colors_neutral_600};
+}}
+
+.base-input__error,
+.base-select__error {{
+  margin-top: {spacing_scale_50};
+  font-size: {typography_small_size};
+  line-height: {typography_small_line_height};
+  color: {colors_danger};
+}}
+
+/* Badge */
+.base-badge {{
+  display: inline-flex;
+  align-items: center;
+  gap: {spacing_scale_50};
+  padding: 0 {spacing_scale_150};
+  height: {spacing_scale_300};
+  border-radius: {radii_pill};
+  font-size: {typography_small_size};
+  line-height: {typography_small_line_height};
+  font-weight: var(--caption-weight);
+  background: {colors_neutral_200};
+  color: {colors_neutral_700};
+}}
+
+.base-badge--success {{
+  background: {colors_success_subtle};
+  color: {colors_success};
+}}
+
+.base-badge--danger {{
+  background: {colors_danger_subtle};
+  color: {colors_danger};
+}}
+
+.base-badge--info {{
+  background: {colors_info_subtle};
+  color: {colors_info};
+}}
+
+/* Modal */
+.base-modal__overlay {{
+  position: fixed;
+  inset: 0;
+  background: {colors_overlay};
+  z-index: {z_index_modal};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: {spacing_scale_400};
+}}
+
+.base-modal__content {{
+  background: {colors_white};
+  border-radius: {radii_lg};
+  box-shadow: {shadows_popover};
+  padding: {spacing_scale_400};
+  width: min(640px, 100%);
+}}
+
+/* Toast */
+.base-toast {{
+  position: fixed;
+  bottom: {spacing_scale_400};
+  right: {spacing_scale_400};
+  background: {colors_neutral_800};
+  color: {colors_white};
+  border-radius: {radii_md};
+  padding: {spacing_scale_200} {spacing_scale_300};
+  box-shadow: {shadows_medium};
+  z-index: {z_index_toast};
+}}
+
+
+.base-toast--success {{
+  background: {colors_success};
+}}
+
+.base-toast--danger {{
+  background: {colors_danger};
+}}
+
+.base-toast--info {{
+  background: {colors_info};
+}}
+/* Empty state */
+.base-empty {{
+  text-align: center;
+  padding: {spacing_scale_600} 0;
+  color: {colors_neutral_600};
+}}
+
+/* Data table */
+.base-data-table .ag-theme-streamlit {{
+  --ag-background-color: {colors_white};
+  --ag-odd-row-background-color: {colors_primary_subtle};
+  --ag-header-background-color: {colors_neutral_100};
+  --ag-header-foreground-color: {colors_neutral_700};
+  --ag-font-family: var(--font-sans);
+  --ag-font-size: {typography_small_size};
+  --ag-border-color: {colors_neutral_200};
+  border-radius: {radii_md};
+  overflow: hidden;
+  border: 1px solid {colors_neutral_200};
+}}
+
+/* Responsive adjustments */
+@media (max-width: {layout_breakpoint_md}) {{
+  section.main > div {{
+    padding-left: {spacing_scale_200};
+    padding-right: {spacing_scale_200};
+  }}
+
+  .base-toolbar {{
+    flex-direction: column;
+    align-items: stretch;
+  }}
+
+  .base-toolbar__actions {{
+    width: 100%;
+    justify-content: flex-end;
+  }}
+}}
+
+@media (max-width: {layout_breakpoint_sm}) {{
+  section.main > div {{
+    padding-left: {spacing_scale_150};
+    padding-right: {spacing_scale_150};
+  }}
+
+  .base-card {{
+    padding: {spacing_scale_200};
+  }}
+}}
