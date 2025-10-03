@@ -1,0 +1,220 @@
+"""Design tokens for the Streamlit Base44 port.
+
+All numeric and color values used throughout the UI must originate here to
+maintain theming consistency and to enable downstream automation (e.g. visual
+regression, theming overrides).
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass, fields, is_dataclass
+from typing import Any, Dict, Iterator, Tuple
+
+
+@dataclass(frozen=True)
+class ColorTokens:
+    """Brand and UI color palette."""
+
+    primary: str = "#3B5BCC"
+    primary_emphasis: str = "#2A44A6"
+    primary_subtle: str = "#E8EDFF"
+    accent: str = "#F59E0B"
+    accent_subtle: str = "#FEF3C7"
+    success: str = "#10B981"
+    success_subtle: str = "#D1FAE5"
+    danger: str = "#EF4444"
+    danger_subtle: str = "#FEE2E2"
+    info: str = "#38BDF8"
+    info_subtle: str = "#E0F2FE"
+    neutral_100: str = "#F8FAFC"
+    neutral_200: str = "#F1F5F9"
+    neutral_300: str = "#E2E8F0"
+    neutral_400: str = "#CBD5F5"
+    neutral_500: str = "#94A3B8"
+    neutral_600: str = "#64748B"
+    neutral_700: str = "#475569"
+    neutral_800: str = "#1E293B"
+    white: str = "#FFFFFF"
+    overlay: str = "rgba(15, 23, 42, 0.55)"
+
+
+@dataclass(frozen=True)
+class TypographyTokens:
+    """Font stack and typographic scale."""
+
+    font_family_sans: str = "'Inter', 'Helvetica Neue', Arial, sans-serif"
+    font_family_mono: str = "'JetBrains Mono', 'Fira Code', monospace"
+    heading_weight: int = 600
+    body_weight: int = 400
+    caption_weight: int = 500
+    h1_size: str = "32px"
+    h1_line_height: str = "40px"
+    h1_letter_spacing: str = "-0.01em"
+    h2_size: str = "24px"
+    h2_line_height: str = "32px"
+    h2_letter_spacing: str = "-0.008em"
+    h3_size: str = "20px"
+    h3_line_height: str = "28px"
+    h3_letter_spacing: str = "-0.006em"
+    body_size: str = "16px"
+    body_line_height: str = "24px"
+    body_letter_spacing: str = "0em"
+    small_size: str = "14px"
+    small_line_height: str = "20px"
+    small_letter_spacing: str = "0em"
+    caption_size: str = "12px"
+    caption_line_height: str = "16px"
+    caption_letter_spacing: str = "0.02em"
+
+
+@dataclass(frozen=True)
+class SpacingTokens:
+    """Spacing scale expressed in pixels."""
+
+    scale: Dict[str, str] = None  # type: ignore[assignment]
+
+    def __post_init__(self) -> None:
+        if self.scale is None:
+            object.__setattr__(
+                self,
+                "scale",
+                {
+                    "0": "0px",
+                    "px": "1px",
+                    "25": "2px",
+                    "50": "4px",
+                    "100": "8px",
+                    "150": "12px",
+                    "200": "16px",
+                    "250": "20px",
+                    "300": "24px",
+                    "400": "32px",
+                    "500": "40px",
+                    "600": "48px",
+                    "800": "64px",
+                },
+            )
+
+    def get(self, key: str) -> str:
+        return self.scale[key]
+
+
+@dataclass(frozen=True)
+class RadiusTokens:
+    none: str = "0px"
+    xs: str = "4px"
+    sm: str = "6px"
+    md: str = "8px"
+    lg: str = "12px"
+    xl: str = "16px"
+    pill: str = "999px"
+
+
+@dataclass(frozen=True)
+class ShadowTokens:
+    subtle: str = "0px 1px 2px rgba(15, 23, 42, 0.08)"
+    medium: str = "0px 10px 30px rgba(15, 23, 42, 0.12)"
+    popover: str = "0px 20px 45px rgba(15, 23, 42, 0.18)"
+
+
+@dataclass(frozen=True)
+class MotionTokens:
+    duration_fast: str = "120ms"
+    duration_base: str = "180ms"
+    duration_slow: str = "280ms"
+    easing_standard: str = "cubic-bezier(0.4, 0, 0.2, 1)"
+    easing_exit: str = "cubic-bezier(0.4, 0, 0.6, 1)"
+
+
+@dataclass(frozen=True)
+class ZIndexTokens:
+    base: int = 0
+    dropdown: int = 10
+    modal: int = 20
+    toast: int = 30
+
+
+@dataclass(frozen=True)
+class LayoutTokens:
+    gutter: str = "24px"
+    max_width: str = "1280px"
+    sidebar_width: str = "280px"
+    header_height: str = "72px"
+    breakpoint_desktop: str = "1440px"
+    breakpoint_lg: str = "1280px"
+    breakpoint_md: str = "1024px"
+    breakpoint_sm: str = "768px"
+
+
+@dataclass(frozen=True)
+class ChartTokens:
+    palette: Tuple[str, ...] = ("#3B5BCC", "#38BDF8", "#10B981", "#F59E0B", "#EF4444")
+
+
+@dataclass(frozen=True)
+class CacheTokens:
+    ttl_seconds: int = 60
+    max_entries: int = 128
+
+
+@dataclass(frozen=True)
+class ThemeTokens:
+    colors: ColorTokens = ColorTokens()
+    typography: TypographyTokens = TypographyTokens()
+    spacing: SpacingTokens = SpacingTokens()
+    radii: RadiusTokens = RadiusTokens()
+    shadows: ShadowTokens = ShadowTokens()
+    motion: MotionTokens = MotionTokens()
+    z_index: ZIndexTokens = ZIndexTokens()
+    layout: LayoutTokens = LayoutTokens()
+    charts: ChartTokens = ChartTokens()
+    cache: CacheTokens = CacheTokens()
+
+
+THEME = ThemeTokens()
+
+
+def flatten_tokens(prefix: str = "") -> Dict[str, Any]:
+    """Flattens the dataclass tree into a string-keyed dictionary.
+
+    Keys are generated by joining nested dataclass field names with underscores
+    (e.g. ``colors_primary`` or ``typography_h1_size``). Dictionary members are
+    flattened using their key as the suffix.
+    """
+
+    def _flatten(obj: Any, parent: str = "") -> Iterator[Tuple[str, Any]]:
+        if is_dataclass(obj):
+            for field in fields(obj):
+                value = getattr(obj, field.name)
+                next_parent = f"{parent}{field.name}_" if parent else f"{field.name}_"
+                yield from _flatten(value, next_parent)
+        elif isinstance(obj, dict):
+            for key, value in obj.items():
+                yield f"{parent}{key}", value
+        elif isinstance(obj, (list, tuple)):
+            for index, value in enumerate(obj):
+                yield f"{parent}{index}", value
+        else:
+            yield parent[:-1], obj
+
+    flattened: Dict[str, Any] = {}
+    for key, value in _flatten(THEME, prefix):
+        flattened[key] = value
+    return flattened
+
+
+def css_variables() -> str:
+    """Generate CSS variable declarations derived from the tokens."""
+
+    declarations = []
+    for key, value in flatten_tokens().items():
+        if isinstance(value, (int, float)):
+            value = str(value)
+        declarations.append(f"  --{key.replace('_', '-')}: {value};")
+    return ":root {\n" + "\n".join(declarations) + "\n}"
+
+
+__all__ = [
+    "THEME",
+    "flatten_tokens",
+    "css_variables",
+]
